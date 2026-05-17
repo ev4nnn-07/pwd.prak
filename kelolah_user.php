@@ -165,7 +165,6 @@ include 'header.php';
 
     </div>
 </div>
-
 <div class="footer">
     &copy; <?php echo date('Y'); ?> Perpustakaan Digital — Prodi Teknik Informatika UPN "Veteran" Yogyakarta
 </div>

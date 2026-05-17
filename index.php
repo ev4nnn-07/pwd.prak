@@ -12,7 +12,6 @@ $pesan = "";
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-
     $query = mysqli_query($konek, "SELECT * FROM users WHERE username='$username' AND password='$password'");
     $cek = mysqli_num_rows($query);
 

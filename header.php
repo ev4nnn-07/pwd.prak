@@ -19,7 +19,6 @@
     <ul class="navbar-menu">
         <li><a href="dashboard.php" <?php if (basename($_SERVER['PHP_SELF']) == 'dashboard.php') echo 'class="aktif"'; ?>>🏠 Dashboard</a></li>
         <li><a href="buku.php" <?php if (basename($_SERVER['PHP_SELF']) == 'buku.php') echo 'class="aktif"'; ?>>📖 Koleksi Buku</a></li>
-
         <?php if ($_SESSION['role'] == 'user') { ?>
             <li><a href="pinjam.php" <?php if (basename($_SERVER['PHP_SELF']) == 'pinjam.php') echo 'class="aktif"'; ?>>📤 Pinjam Buku</a></li>
             <li><a href="riwayat.php" <?php if (basename($_SERVER['PHP_SELF']) == 'riwayat.php') echo 'class="aktif"'; ?>>📋 Riwayat</a></li>

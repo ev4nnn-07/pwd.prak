@@ -186,7 +186,6 @@ include 'header.php';
                 </div>
             </div>
         </div>
-
     <?php } ?>
 
     <div class="card">

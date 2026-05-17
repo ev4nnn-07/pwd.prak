@@ -146,7 +146,6 @@ include 'header.php';
             </div>
         </div>
     <?php } ?>
-
 </div>
 
 <?php include 'footer.php'; ?>

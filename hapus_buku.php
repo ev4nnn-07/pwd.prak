@@ -5,9 +5,7 @@ if (empty($_SESSION['username']) || $_SESSION['role'] != 'admin') {
     header('Location: index.php');
     exit();
 }
-
 include 'koneksi.php';
-
 $id_buku = $_GET['id'];
 
 $cek_pinjam = mysqli_query($konek, "SELECT * FROM peminjaman WHERE id_buku='$id_buku' AND status='dipinjam'");

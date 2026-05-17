@@ -5,7 +5,6 @@ if (empty($_SESSION['username'])) {
     header('Location: index.php');
     exit();
 }
-
 include 'koneksi.php';
 
 $id_pinjam = $_GET['id'];
