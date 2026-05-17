@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
         <div class="login-logo">
             <span class="ikon">📚</span>
             <h1>Perpustakaan Digital</h1>
-            <p>Prodi Teknik Informatika UPN "Veteran" Yogyakarta</p>
+            <p>Universitas Pembangunan Nasional Veteran Yogyakarta</p>
         </div>
 
         <?php if ($pesan != "") { ?>
