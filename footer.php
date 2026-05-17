@@ -1,5 +1,5 @@
 <div class="footer">
-    &copy; <?php echo date('Y'); ?> Perpustakaan Digital — Prodi Teknik Informatika UPN "Veteran" Yogyakarta
+    &copy; <?php echo date('Y'); ?> Universitas Pembangunan Nasional Veteran Yogyakarta
 </div>
 </body>
 </html>
