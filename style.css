@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
-
 :root {
     --hijau-tua:   #1a3c2e;
     --hijau-mid:   #2d6a4f;
@@ -27,10 +25,10 @@
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', 'Poppins', sans-serif;
     background-color: var(--krem);
     color: var(--teks-gelap);
-    line-height: 1.6;
+    line-height: 1.65;
     min-height: 100vh;
 }
 
@@ -48,14 +46,20 @@ body {
 }
 
 .navbar-brand {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 1.45rem;
+    font-weight: 400;
     color: var(--krem);
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+/* Pastikan teks brand tidak tampil bold (override jika perlu) */
+.navbar-brand, .navbar-brand span {
+    font-weight: 400 !important;
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .navbar-brand span {
@@ -132,10 +136,19 @@ body {
 }
 
 .page-hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -0.03em;
+}
+
+.card-header {
+    font-family: 'Inter', sans-serif;
+}
+
+.buku-info h4 {
+    font-family: 'Inter', sans-serif;
 }
 
 .page-hero p {
@@ -152,24 +165,25 @@ body {
 
 .card {
     background: var(--putih);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    border-radius: 24px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.08);
     overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
 }
 
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    box-shadow: 0 24px 45px rgba(0,0,0,0.1);
 }
 
 .card-header {
     background: var(--hijau-tua);
     color: var(--putih);
     padding: 18px 24px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
 }
 
 .card-body {
@@ -232,17 +246,58 @@ table {
     font-size: 0.9rem;
 }
 
+table th,
+table td {
+    white-space: normal;
+    word-break: break-word;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+/* When table-wrap is inside a card, remove the white panel so the
+   card header and table header sit flush together. This targets
+   only card tables to avoid changing other table panels. */
+.card .table-wrap {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 720px;
+}
+
+/* Make card header and thead visually continuous */
+.card .card-header {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.card .table-wrap table thead tr {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 thead tr {
     background: var(--hijau-tua);
     color: var(--putih);
 }
 
 thead th {
-    padding: 14px 16px;
+    padding: 18px 20px;
     text-align: left;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 tbody tr {
@@ -278,15 +333,15 @@ tbody td {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 9px 20px;
+    padding: 10px 20px;
     border: none;
-    border-radius: var(--radius-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
+    border-radius: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     white-space: nowrap;
 }
 
@@ -339,14 +394,14 @@ tbody td {
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 10px 14px;
+    padding: 12px 16px;
     border: 2px solid var(--krem-gelap);
-    border-radius: var(--radius-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    border-radius: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
     color: var(--teks-gelap);
     background: var(--putih);
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
 }
 
@@ -398,14 +453,14 @@ tbody td {
 
 .search-bar input {
     flex: 1;
-    padding: 10px 16px;
+    padding: 12px 18px;
     border: 2px solid var(--krem-gelap);
-    border-radius: var(--radius-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    border-radius: 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
     background: var(--putih);
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .search-bar input:focus {
@@ -414,8 +469,8 @@ tbody td {
 
 .buku-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 26px;
 }
 
 .buku-card {
@@ -441,20 +496,36 @@ tbody td {
     position: relative;
 }
 
+/* Ensure cover images fully fill the area without showing edges or background. */
+.buku-cover {
+    overflow: hidden;
+}
+
+.buku-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    background: transparent;
+    -webkit-backface-visibility: hidden;
+}
+
 .buku-cover-coklat { background: linear-gradient(135deg, var(--coklat), var(--hijau-tua)); }
 .buku-cover-biru { background: linear-gradient(135deg, #2c3e50, #34495e); }
 .buku-cover-ungu { background: linear-gradient(135deg, #6c3483, #2c3e50); }
 
 .stok-badge {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    background: rgba(0,0,0,0.6);
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.65);
     color: white;
-    font-size: 0.7rem;
-    padding: 2px 8px;
+    font-size: 0.72rem;
+    padding: 4px 10px;
     border-radius: 20px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
 }
 
 .buku-info {
@@ -462,18 +533,19 @@ tbody td {
 }
 
 .buku-info h4 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--hijau-tua);
     margin-bottom: 4px;
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
 .buku-info p {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--teks-abu);
-    margin-bottom: 3px;
+    margin-bottom: 4px;
+    font-family: 'Inter', sans-serif;
 }
 
 .buku-kategori {
@@ -537,7 +609,7 @@ tbody td {
 }
 
 .login-logo h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--hijau-tua);
@@ -662,7 +734,7 @@ tbody td {
 }
 
 .modal-box h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.2rem;
     color: var(--hijau-tua);
     margin-bottom: 16px;

@@ -164,7 +164,7 @@ include 'header.php';
 
             <div class="card mt-20">
                 <div class="card-body">
-                    <h4 style="font-family:'Playfair Display',serif; color:var(--hijau-tua); margin-bottom:12px;">📌 Aturan Peminjaman</h4>
+                    <h4 style="font-family:'Inter',sans-serif; color:var(--hijau-tua); margin-bottom:12px;">📌 Aturan Peminjaman</h4>
                     <ul style="font-size:0.85rem; color:var(--teks-abu); line-height:2; padding-left:16px;">
                         <li>Maksimal peminjaman <strong>14 hari</strong></li>
                         <li>Kembalikan tepat waktu</li>

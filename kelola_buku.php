@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 include 'koneksi.php';
 
@@ -11,6 +11,42 @@ $pesan = "";
 $tipe  = "";
 $mode  = isset($_GET['edit']) ? 'edit' : 'tambah';
 $id_edit = isset($_GET['edit']) ? $_GET['edit'] : '';
+$upload_dir = 'uploads/covers/';
+
+function upload_cover($file, $upload_dir) {
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        return null;
+    }
+
+    $allowed = ['image/jpeg', 'image/png', 'image/gif'];
+    $maxSize = 2 * 1024 * 1024;
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return false;
+    }
+
+    if ($file['size'] > $maxSize) {
+        return false;
+    }
+
+    if (!in_array($file['type'], $allowed)) {
+        return false;
+    }
+
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0755, true);
+    }
+
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $filename = uniqid('cover_', true) . '.' . strtolower($extension);
+    $path = $upload_dir . $filename;
+
+    if (move_uploaded_file($file['tmp_name'], $path)) {
+        return $path;
+    }
+
+    return false;
+}
 
 if (isset($_POST['submit_tambah'])) {
     $judul        = $_POST['judul'];
@@ -19,18 +55,34 @@ if (isset($_POST['submit_tambah'])) {
     $tahun_terbit = $_POST['tahun_terbit'];
     $kategori     = $_POST['kategori'];
     $stok         = $_POST['stok'];
+    $cover        = null;
 
-    $query = mysqli_query($konek,
-        "INSERT INTO buku (judul, pengarang, penerbit, tahun_terbit, kategori, stok)
-         VALUES ('$judul', '$pengarang', '$penerbit', '$tahun_terbit', '$kategori', '$stok')"
-    );
+    if (isset($_FILES['cover'])) {
+        $upload = upload_cover($_FILES['cover'], $upload_dir);
+        if ($upload === false) {
+            $pesan = "Gagal mengunggah cover. Pastikan file JPG, PNG, atau GIF dan ukuran maksimal 2MB.";
+            $tipe  = "danger";
+        } else {
+            $cover = $upload;
+        }
+    }
 
-    if ($query) {
-        $pesan = "Buku \"$judul\" berhasil ditambahkan!";
-        $tipe  = "success";
-    } else {
-        $pesan = "Gagal menambahkan buku!";
-        $tipe  = "danger";
+    if ($pesan === "") {
+        $query = mysqli_query($konek,
+            "INSERT INTO buku (judul, pengarang, penerbit, tahun_terbit, kategori, stok, cover)
+             VALUES ('$judul', '$pengarang', '$penerbit', '$tahun_terbit', '$kategori', '$stok', '$cover')"
+        );
+
+        if ($query) {
+            $pesan = "Buku \"$judul\" berhasil ditambahkan!";
+            $tipe  = "success";
+        } else {
+            $pesan = "Gagal menambahkan buku!";
+            $tipe  = "danger";
+            if ($cover && file_exists($cover)) {
+                unlink($cover);
+            }
+        }
     }
 }
 
@@ -42,26 +94,43 @@ if (isset($_POST['submit_edit'])) {
     $tahun_terbit = $_POST['tahun_terbit'];
     $kategori     = $_POST['kategori'];
     $stok         = $_POST['stok'];
+    $cover        = isset($_POST['old_cover']) ? $_POST['old_cover'] : null;
 
-    $query = mysqli_query($konek,
-        "UPDATE buku SET
-            judul='$judul',
-            pengarang='$pengarang',
-            penerbit='$penerbit',
-            tahun_terbit='$tahun_terbit',
-            kategori='$kategori',
-            stok='$stok'
-         WHERE id_buku='$id_buku'"
-    );
+    if (isset($_FILES['cover'])) {
+        $upload = upload_cover($_FILES['cover'], $upload_dir);
+        if ($upload === false) {
+            $pesan = "Gagal mengunggah cover. Pastikan file JPG, PNG, atau GIF dan ukuran maksimal 2MB.";
+            $tipe  = "danger";
+        } elseif ($upload !== null) {
+            if ($cover && file_exists($cover)) {
+                unlink($cover);
+            }
+            $cover = $upload;
+        }
+    }
 
-    if ($query) {
-        $pesan = "Buku berhasil diperbarui!";
-        $tipe  = "success";
-        $mode  = 'tambah';
-        $id_edit = '';
-    } else {
-        $pesan = "Gagal memperbarui buku!";
-        $tipe  = "danger";
+    if ($pesan === "") {
+        $query = mysqli_query($konek,
+            "UPDATE buku SET
+                judul='$judul',
+                pengarang='$pengarang',
+                penerbit='$penerbit',
+                tahun_terbit='$tahun_terbit',
+                kategori='$kategori',
+                stok='$stok',
+                cover='$cover'
+             WHERE id_buku='$id_buku'"
+        );
+
+        if ($query) {
+            $pesan = "Buku berhasil diperbarui!";
+            $tipe  = "success";
+            $mode  = 'tambah';
+            $id_edit = '';
+        } else {
+            $pesan = "Gagal memperbarui buku!";
+            $tipe  = "danger";
+        }
     }
 }
 
@@ -99,9 +168,10 @@ include 'header.php';
                 <?php echo ($mode == 'edit') ? '✏️ Edit Buku' : '➕ Tambah Buku Baru'; ?>
             </div>
             <div class="card-body">
-                <form method="POST" action="kelola_buku.php<?php echo ($id_edit) ? '?edit='.$id_edit : ''; ?>">
+                <form method="POST" enctype="multipart/form-data" action="kelola_buku.php<?php echo ($id_edit) ? '?edit='.$id_edit : ''; ?>">
                     <?php if ($mode == 'edit') { ?>
                         <input type="hidden" name="id_buku" value="<?php echo $data_edit['id_buku']; ?>">
+                        <input type="hidden" name="old_cover" value="<?php echo $data_edit['cover']; ?>">
                     <?php } ?>
 
                     <div class="form-group">
@@ -138,6 +208,12 @@ include 'header.php';
                                    value="<?php echo ($data_edit) ? $data_edit['stok'] : '1'; ?>"
                                    required>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload Foto Buku</label>
+                        <input type="file" name="cover" accept="image/jpeg,image/png,image/gif">
+                        <small>Max 2MB. Format: JPG, JPEG, PNG, GIF.</small>
                     </div>
 
                     <div class="form-group">
@@ -183,14 +259,14 @@ include 'header.php';
                 <table>
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Judul</th>
-                            <th>Pengarang</th>
-                            <th>Kategori</th>
-                            <th>Tahun</th>
-                            <th>Stok</th>
-                            <th>Aksi</th>
-                        </tr>
+                                <th>No</th>
+                                <th>Judul</th>
+                                <th>Pengarang</th>
+                                <th>Kategori</th>
+                                <th>Tahun</th>
+                                <th>Stok</th>
+                                <th>Aksi</th>
+                            </tr>
                     </thead>
                     <tbody>
                     <?php
@@ -210,7 +286,8 @@ include 'header.php';
                     ?>
                         <tr>
                             <td><?php echo $no++; ?></td>
-                            <td style="font-weight:500; max-width:200px;"><?php echo $buku['judul']; ?></td>
+                            
+                            <td style="font-weight:500; max-width:260px;"><?php echo $buku['judul']; ?></td>
                             <td><?php echo $buku['pengarang']; ?></td>
                             <td><span class="buku-kategori"><?php echo $buku['kategori']; ?></span></td>
                             <td><?php echo $buku['tahun_terbit']; ?></td>

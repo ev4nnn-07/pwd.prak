@@ -204,8 +204,15 @@ include 'header.php';
                 $i++;
             ?>
                 <div class="buku-card">
-                    <div class="buku-cover <?php echo $cover_class; ?>">
-                        <?php echo $emoji; ?>
+                    <?php
+                    $cover_style = '';
+                    if (!empty($buku['cover'])) {
+                        $url = $buku['cover'];
+                        $cover_style = "background-image: url('$url'); background-size: cover; background-position: center; background-repeat: no-repeat;";
+                    }
+                    ?>
+                    <div class="buku-cover <?php echo $cover_class; ?>" style="<?php echo $cover_style; ?>">
+                        <?php if (empty($buku['cover'])) { echo $emoji; } ?>
                         <span class="stok-badge">Stok: <?php echo $buku['stok']; ?></span>
                     </div>
                     <div class="buku-info">

@@ -98,8 +98,15 @@ include 'header.php';
             }
         ?>
             <div class="buku-card">
-                <div class="buku-cover <?php echo $cover_class; ?>">
-                    <?php echo $emoji; ?>
+                <?php
+                $cover_style = '';
+                if (!empty($buku['cover'])) {
+                    $url = $buku['cover'];
+                    $cover_style = "background-image: url('$url'); background-size: cover; background-position: center; background-repeat: no-repeat;";
+                }
+                ?>
+                <div class="buku-cover <?php echo $cover_class; ?>" style="<?php echo $cover_style; ?>">
+                    <?php if (empty($buku['cover'])) { echo $emoji; } ?>
                     <span class="stok-badge" style="<?php echo $stok_warna; ?>"><?php echo $stok_info; ?></span>
                 </div>
                 <div class="buku-info">
